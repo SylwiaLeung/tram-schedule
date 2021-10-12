@@ -23,5 +23,10 @@ namespace Tram_Schedule.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite($"Data Source={DbPath}");
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.SeedTrams();
+        }
     }
 }
