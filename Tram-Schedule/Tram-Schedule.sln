@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tram-Schedule", "Tram-Schedule.csproj", "{31E500C3-A23B-4F81-80CD-CA6C81FBBC93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tram-Schedule", "Tram-Schedule.csproj", "{31E500C3-A23B-4F81-80CD-CA6C81FBBC93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tram-ScheduleGUI", "..\Tram-ScheduleGUI\Tram-ScheduleGUI.csproj", "{58A749DA-6A34-45B6-8994-EB4BBA60365D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tram-ScheduleTests", "..\Tram-ScheduleTests\Tram-ScheduleTests.csproj", "{A5E2B2C6-0F34-4904-8A2F-29B2AAE16855}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{31E500C3-A23B-4F81-80CD-CA6C81FBBC93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31E500C3-A23B-4F81-80CD-CA6C81FBBC93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31E500C3-A23B-4F81-80CD-CA6C81FBBC93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58A749DA-6A34-45B6-8994-EB4BBA60365D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58A749DA-6A34-45B6-8994-EB4BBA60365D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58A749DA-6A34-45B6-8994-EB4BBA60365D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58A749DA-6A34-45B6-8994-EB4BBA60365D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5E2B2C6-0F34-4904-8A2F-29B2AAE16855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5E2B2C6-0F34-4904-8A2F-29B2AAE16855}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5E2B2C6-0F34-4904-8A2F-29B2AAE16855}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5E2B2C6-0F34-4904-8A2F-29B2AAE16855}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

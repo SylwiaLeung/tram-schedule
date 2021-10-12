@@ -5,7 +5,7 @@ using Tram_Schedule.Models;
 
 namespace Tram_Schedule.DAL
 {
-    public static class StoreSeeder
+    public static class TramSeeder
     {
         public static void SeedTrams(this ModelBuilder builder)
         {
