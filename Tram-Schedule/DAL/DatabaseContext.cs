@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using Codecool.ScheduleScript.Models;
 using Microsoft.EntityFrameworkCore;
+using Tram_Schedule.Models;
 
 namespace Tram_Schedule.DAL
 {

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Codecool.ScheduleScript.Models;
 using Microsoft.EntityFrameworkCore;
 using Tram_Schedule.Models;
 
