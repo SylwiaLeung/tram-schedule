@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Tram_Schedule.Models;
@@ -40,6 +41,18 @@ namespace Tram_Schedule.DAL.DAO
         {
             Context.Trams.Update(instance);
             Context.SaveChanges();
+        }
+
+        public IEnumerable<string> ReadAllTramNames()
+        {
+            return Context.Trams.Select(x => x.Name).AsNoTracking().ToList();
+        }
+
+        public IEnumerable<DateTime> ReadTramFirstRun(string name)
+        {
+            var runs = new List<DateTime>();
+            runs.Add(Read(name).FirstRun);
+            return runs;
         }
     }
 }

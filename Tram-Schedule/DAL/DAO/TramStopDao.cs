@@ -5,7 +5,7 @@ using Tram_Schedule.Models;
 
 namespace Tram_Schedule.DAL.DAO
 {
-    public class TramStopDao : IDao<TramStop>
+    public class TramStopDao
     {
         private DatabaseContext Context { get; set; }
 
@@ -31,7 +31,7 @@ namespace Tram_Schedule.DAL.DAO
             return Context.TramStops.AsNoTracking().Where(x => x.Name == name).FirstOrDefault();
         }
 
-        public List<TramStop> ReadAll()
+        public IEnumerable<TramStop> ReadAll()
         {
             return Context.TramStops.AsNoTracking().ToList();
         }
@@ -40,6 +40,18 @@ namespace Tram_Schedule.DAL.DAO
         {
             Context.TramStops.Update(instance);
             Context.SaveChanges();
+        }
+
+        public IEnumerable<string> ReadAllTramStopNames()
+        {
+            return Context.TramStops.Select(x => x.Name).AsNoTracking().ToList();
+        }
+
+        public IEnumerable<string> ReadTramStopDescription(string name)
+        {
+            List<string> descriptions = new List<string>();
+            descriptions.Add(Read(name).Description);
+            return descriptions;
         }
     }
 }

@@ -12,6 +12,6 @@ namespace Tram_Schedule.Models
 
         public string Name { get; set; }
 
-        public ICollection<TramStop> StopsList { get; set; }
+        public IEnumerable<TramStop> StopsList { get; set; }
     }
 }

@@ -41,5 +41,15 @@ namespace Tram_Schedule.DAL.DAO
             Context.TramRoutes.Update(instance);
             Context.SaveChanges();
         }
+
+        public IEnumerable<string> ReadAllRouteNames()
+        {
+            return Context.TramRoutes.Select(x => x.Name).AsNoTracking().ToList();
+        }
+
+        public List<string> ReadRouteStops(string name)
+        {
+            return Read(name).StopsList.Select(x => x.Name).ToList();
+        }
     }
 }

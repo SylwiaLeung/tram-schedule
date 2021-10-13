@@ -25,21 +25,6 @@ namespace Tram_Schedule.DAL
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.SeedTrams();
-            //try
-            //{
-            //    connection.Open();
-            //    TramDao dao = new(context);
-            //    List<Tram> trams = dao.ReadAll();
-            //    dataGridView1.DataSource = trams;
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Error connection", ex.Message);
-            //}
-            //finally
-            //{
-            //    connection.Close();
-            //}
         }
     }
 }
