@@ -7,7 +7,7 @@ namespace Tram_Schedule.DAL.DAO
 {
     public class TramDao : IDao<Tram>
     {
-        private DatabaseContext Context { get; set; }
+        public DatabaseContext Context { get; set; }
 
         public TramDao(DatabaseContext context)
         {
