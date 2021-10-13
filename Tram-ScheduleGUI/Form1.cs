@@ -24,7 +24,7 @@ namespace Tram_ScheduleGUI
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void BrowseTrams_Click(object sender, EventArgs e)
         {
             listBox2.DataSource = null;
             try
@@ -93,7 +93,7 @@ namespace Tram_ScheduleGUI
             {
                 connection.Open();
                 string name = (string)listBox1.SelectedItem;
-                switch(current)
+                switch (current)
                 {
                     case "button3":
                         TramStopDao dao = new(context);
@@ -113,7 +113,7 @@ namespace Tram_ScheduleGUI
                     default:
                         break;
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -123,6 +123,15 @@ namespace Tram_ScheduleGUI
             {
                 connection.Close();
             }
+        }
+        private void AddTram_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AddStop_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

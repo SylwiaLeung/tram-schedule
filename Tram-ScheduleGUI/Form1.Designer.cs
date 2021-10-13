@@ -31,14 +31,16 @@ namespace Tram_ScheduleGUI
         {
             this.components = new System.ComponentModel.Container();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.haioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.listBox2 = new System.Windows.Forms.ListBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.listBox2 = new System.Windows.Forms.ListBox();
-            this.haioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AddTram = new System.Windows.Forms.Button();
+            this.AddStop = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -53,9 +55,15 @@ namespace Tram_ScheduleGUI
             this.haioToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(945, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // haioToolStripMenuItem
+            // 
+            this.haioToolStripMenuItem.Name = "haioToolStripMenuItem";
+            this.haioToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.haioToolStripMenuItem.Text = "Haio!";
             // 
             // splitContainer1
             // 
@@ -65,6 +73,8 @@ namespace Tram_ScheduleGUI
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.AddStop);
+            this.splitContainer1.Panel1.Controls.Add(this.AddTram);
             this.splitContainer1.Panel1.Controls.Add(this.button3);
             this.splitContainer1.Panel1.Controls.Add(this.button2);
             this.splitContainer1.Panel1.Controls.Add(this.button1);
@@ -74,15 +84,15 @@ namespace Tram_ScheduleGUI
             // 
             this.splitContainer1.Panel2.Controls.Add(this.listBox2);
             this.splitContainer1.Panel2.Controls.Add(this.listBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(800, 426);
-            this.splitContainer1.SplitterDistance = 266;
+            this.splitContainer1.Size = new System.Drawing.Size(945, 549);
+            this.splitContainer1.SplitterDistance = 314;
             this.splitContainer1.TabIndex = 1;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(59, 203);
+            this.button3.Location = new System.Drawing.Point(59, 159);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(139, 86);
+            this.button3.Size = new System.Drawing.Size(139, 57);
             this.button3.TabIndex = 3;
             this.button3.Text = "Show Tramstops";
             this.button3.UseVisualStyleBackColor = true;
@@ -90,9 +100,9 @@ namespace Tram_ScheduleGUI
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(59, 109);
+            this.button2.Location = new System.Drawing.Point(59, 84);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(139, 88);
+            this.button2.Size = new System.Drawing.Size(139, 69);
             this.button2.TabIndex = 2;
             this.button2.Text = "Display Tram Routes";
             this.button2.UseVisualStyleBackColor = true;
@@ -102,19 +112,28 @@ namespace Tram_ScheduleGUI
             // 
             this.button1.Location = new System.Drawing.Point(59, 17);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(139, 86);
+            this.button1.Size = new System.Drawing.Size(139, 61);
             this.button1.TabIndex = 1;
             this.button1.Text = "Browse Trams";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.BrowseTrams_Click);
+            // 
+            // listBox2
+            // 
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.ItemHeight = 15;
+            this.listBox2.Location = new System.Drawing.Point(256, 17);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(226, 199);
+            this.listBox2.TabIndex = 2;
             // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(24, 0);
+            this.listBox1.Location = new System.Drawing.Point(24, 17);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(226, 424);
+            this.listBox1.Size = new System.Drawing.Size(226, 199);
             this.listBox1.TabIndex = 1;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -123,26 +142,30 @@ namespace Tram_ScheduleGUI
             this.bindingSource1.DataSource = this.splitContainer1.Panel2.Controls;
             this.bindingSource1.Position = 0;
             // 
-            // listBox2
+            // AddTram
             // 
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.ItemHeight = 15;
-            this.listBox2.Location = new System.Drawing.Point(256, 0);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(226, 424);
-            this.listBox2.TabIndex = 2;
+            this.AddTram.Location = new System.Drawing.Point(59, 278);
+            this.AddTram.Name = "AddTram";
+            this.AddTram.Size = new System.Drawing.Size(139, 61);
+            this.AddTram.TabIndex = 4;
+            this.AddTram.Text = "Add Tram";
+            this.AddTram.UseVisualStyleBackColor = true;
+            this.AddTram.Click += new System.EventHandler(this.AddStop_Click);
             // 
-            // haioToolStripMenuItem
+            // AddStop
             // 
-            this.haioToolStripMenuItem.Name = "haioToolStripMenuItem";
-            this.haioToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
-            this.haioToolStripMenuItem.Text = "Haio!";
+            this.AddStop.Location = new System.Drawing.Point(59, 345);
+            this.AddStop.Name = "AddStop";
+            this.AddStop.Size = new System.Drawing.Size(139, 61);
+            this.AddStop.TabIndex = 5;
+            this.AddStop.Text = "Add Stop";
+            this.AddStop.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(945, 573);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -171,6 +194,8 @@ namespace Tram_ScheduleGUI
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.ToolStripMenuItem haioToolStripMenuItem;
         private System.Windows.Forms.ListBox listBox2;
+        private System.Windows.Forms.Button AddStop;
+        private System.Windows.Forms.Button AddTram;
     }
 }
 
