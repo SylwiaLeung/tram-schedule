@@ -44,10 +44,10 @@ namespace Tram_Schedule.DAL.DAO
 
         public IEnumerable<string> ReadAllRouteNames()
         {
-            return Context.TramRoutes.Select(x => x.Name).AsNoTracking().ToList();
+            return ReadAll().Select(x => x.Name).ToList();
         }
 
-        public List<string> ReadRouteStops(string name)
+        public IEnumerable<string> ReadRouteStops(string name)
         {
             return Read(name).StopsList.Select(x => x.Name).ToList();
         }

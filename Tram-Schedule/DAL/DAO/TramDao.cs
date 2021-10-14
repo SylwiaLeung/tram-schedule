@@ -45,13 +45,15 @@ namespace Tram_Schedule.DAL.DAO
 
         public IEnumerable<string> ReadAllTramNames()
         {
-            return Context.Trams.Select(x => x.Name).AsNoTracking().ToList();
+            return ReadAll().Select(x => x.Name).ToList();
         }
 
         public IEnumerable<DateTime> ReadTramFirstRun(string name)
         {
-            var runs = new List<DateTime>();
-            runs.Add(Read(name).FirstRun);
+            var runs = new List<DateTime>
+            {
+                Read(name).FirstRun
+            };
             return runs;
         }
 
@@ -59,8 +61,7 @@ namespace Tram_Schedule.DAL.DAO
         {
             if (firstrun != string.Empty)
             {
-                DateTime dt;
-                if (DateTime.TryParse(firstrun, out dt))
+                if (DateTime.TryParse(firstrun, out DateTime dt))
                 {
                     if (dt <= DateTime.Now)
                     {

@@ -3,7 +3,6 @@ using System.Data.SQLite;
 using System;
 using Tram_Schedule.DAL;
 using Tram_Schedule.DAL.DAO;
-using Tram_Schedule.Models;
 using System.Collections.Generic;
 
 namespace Tram_ScheduleGUI
@@ -13,20 +12,15 @@ namespace Tram_ScheduleGUI
         SQLiteConnection connection = new SQLiteConnection(@"data source=C:\Users\CTNW74\Desktop\projects\tram-schedule\Tram-Schedule\bin\Debug\net5.0\TramTable.db");
         DatabaseContext context = new DatabaseContext();
         string current;
+        string routeName = string.Empty;
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void BrowseTrams_Click(object sender, EventArgs e)
         {
-            DisableFillingData();
             listBox2.DataSource = null;
             try
             {
@@ -48,7 +42,6 @@ namespace Tram_ScheduleGUI
 
         private void button2_Click(object sender, EventArgs e)
         {
-            DisableFillingData();
             listBox2.DataSource = null;
             try
             {
@@ -70,7 +63,6 @@ namespace Tram_ScheduleGUI
 
         private void button3_Click(object sender, EventArgs e)
         {
-            DisableFillingData();
             listBox2.DataSource = null;
             try
             {
@@ -124,9 +116,26 @@ namespace Tram_ScheduleGUI
 
         private void AddStop_Click(object sender, EventArgs e)
         {
+            RouteListBox.DataSource = null;
             current = "button5";
             EnableFillingData();
+            EnableChoosingRoute();
             textBox2.Text = "Description of the stop";
+            try
+            {
+                connection.Open();
+                RouteDao dao = new(context);
+                var routes = dao.ReadAllRouteNames();
+                RouteListBox.DataSource = routes;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Connection error: {ex.Message}");
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         private void Submit_Click(object sender, EventArgs e)
@@ -152,10 +161,27 @@ namespace Tram_ScheduleGUI
                         {
                             MessageBox.Show($"{ex.Message}");
                         }
+                        finally
+                        {
+                            DisableFillingData();
+                        }
                         break;
                     case "button5":
-                        //RouteDao routeDao = new(context);
-                        MessageBox.Show("Clicku click!");
+                        TramStopDao stopDao = new(context);
+                        try
+                        {
+                            stopDao.AddNewStop(textBox1.Text, textBox2.Text, routeName);
+                            MessageBox.Show("Successfully added the new stop!");
+                        }
+                        catch (FormatException ex)
+                        {
+                            MessageBox.Show($"{ex.Message}");
+                        }
+                        finally
+                        {
+                            DisableChoosingRoute();
+                            DisableFillingData();
+                        }
                         break;
                     default:
                         break;
@@ -174,11 +200,6 @@ namespace Tram_ScheduleGUI
             }
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            
-        }
-
         private void EnableFillingData()
         {
             textBox1.Enabled = true;
@@ -192,19 +213,28 @@ namespace Tram_ScheduleGUI
             textBox2.Enabled = false;
             Submit.Enabled = false;
         }
+        private void EnableChoosingRoute()
+        {
+            RouteListBox.Enabled = true;
+        }
+        private void DisableChoosingRoute()
+        {
+            RouteListBox.Enabled = false;
+        }
 
         private bool CheckIfFieldIsEmpty(TextBox box)
         {
             return box.Text == string.Empty;
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-        }
-
         private void RemoveText(object sender, EventArgs e)
         {
             textBox2.Text = string.Empty;
+        }
+
+        private void RouteListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            routeName = (string)RouteListBox.SelectedItem;
         }
     }
 }

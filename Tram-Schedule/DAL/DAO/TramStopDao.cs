@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Tram_Schedule.Models;
@@ -44,14 +45,37 @@ namespace Tram_Schedule.DAL.DAO
 
         public IEnumerable<string> ReadAllTramStopNames()
         {
-            return Context.TramStops.Select(x => x.Name).AsNoTracking().ToList();
+            return ReadAll().Select(x => x.Name).ToList();
         }
 
         public IEnumerable<string> ReadTramStopDescription(string name)
         {
-            List<string> descriptions = new List<string>();
-            descriptions.Add(Read(name).Description);
+            List<string> descriptions = new()
+            {
+                Read(name).Description
+            };
             return descriptions;
+        }
+
+        public void AddNewStop(string name, string description, string routeName)
+        {
+            RouteDao dao = new(Context);
+            if (routeName != string.Empty)
+            {
+                var route = dao.Read(routeName);
+                if (description != string.Empty)
+                {
+                    Add(new TramStop() { Name = name, Description = description, RouteID = route.ID });
+                }
+                else
+                {
+                    Add(new TramStop() { Name = name, RouteID = route.ID });
+                }
+            }
+            else
+            {
+                throw new ArgumentException("Please choose from the list of routes.");
+            }
         }
     }
 }
