@@ -32,7 +32,7 @@ namespace Tram_Schedule.DAL.DAO
             return Context.Trams.AsNoTracking().Where(x => x.Name == name).FirstOrDefault();
         }
 
-        public List<Tram> ReadAll()
+        public IEnumerable<Tram> ReadAll()
         {
             return Context.Trams.AsNoTracking().ToList();
         }
@@ -53,6 +53,29 @@ namespace Tram_Schedule.DAL.DAO
             var runs = new List<DateTime>();
             runs.Add(Read(name).FirstRun);
             return runs;
+        }
+
+        public void AddNewTram(string name, string firstrun)
+        {
+            if (firstrun != string.Empty)
+            {
+                DateTime dt;
+                if (DateTime.TryParse(firstrun, out dt))
+                {
+                    if (dt <= DateTime.Now)
+                    {
+                        Add(new Tram() { Name = name, FirstRun = dt });
+                    }
+                }
+                else
+                {
+                    throw new FormatException();
+                }
+            }
+            else
+            {
+                Add(new Tram() { Name = name });
+            }
         }
     }
 }

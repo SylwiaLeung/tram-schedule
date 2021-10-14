@@ -26,6 +26,7 @@ namespace Tram_ScheduleGUI
 
         private void BrowseTrams_Click(object sender, EventArgs e)
         {
+            DisableFillingData();
             listBox2.DataSource = null;
             try
             {
@@ -47,6 +48,7 @@ namespace Tram_ScheduleGUI
 
         private void button2_Click(object sender, EventArgs e)
         {
+            DisableFillingData();
             listBox2.DataSource = null;
             try
             {
@@ -68,6 +70,7 @@ namespace Tram_ScheduleGUI
 
         private void button3_Click(object sender, EventArgs e)
         {
+            DisableFillingData();
             listBox2.DataSource = null;
             try
             {
@@ -116,24 +119,39 @@ namespace Tram_ScheduleGUI
         {
             current = "button4";
             EnableFillingData();
+            textBox2.Text = "First run date (dd-MM-yyy)";
         }
 
         private void AddStop_Click(object sender, EventArgs e)
         {
             current = "button5";
             EnableFillingData();
+            textBox2.Text = "Description of the stop";
         }
 
         private void Submit_Click(object sender, EventArgs e)
         {
+            if (CheckIfFieldIsEmpty(textBox1))
+            {
+                MessageBox.Show("The name field cannot be empty.");
+                return;
+            }
             try
             {
                 connection.Open();
                 switch (current)
                 {
                     case "button4":
-                        //TramStopDao dao = new(context);
-                        MessageBox.Show("Click!");
+                        TramDao dao = new(context);
+                        try
+                        {
+                            dao.AddNewTram(textBox1.Text, textBox2.Text);
+                            MessageBox.Show("Successfully added the new tram!");
+                        }
+                        catch (FormatException ex)
+                        {
+                            MessageBox.Show($"{ex.Message}");
+                        }
                         break;
                     case "button5":
                         //RouteDao routeDao = new(context);
@@ -145,11 +163,13 @@ namespace Tram_ScheduleGUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Connection error: {ex.Message}");
+                MessageBox.Show($"Try again; {ex.Message}");
             }
             finally
             {
                 connection.Close();
+                textBox1.Clear();
+                textBox2.Clear();
                 DisableFillingData();
             }
         }
@@ -171,6 +191,20 @@ namespace Tram_ScheduleGUI
             textBox1.Enabled = false;
             textBox2.Enabled = false;
             Submit.Enabled = false;
+        }
+
+        private bool CheckIfFieldIsEmpty(TextBox box)
+        {
+            return box.Text == string.Empty;
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void RemoveText(object sender, EventArgs e)
+        {
+            textBox2.Text = string.Empty;
         }
     }
 }

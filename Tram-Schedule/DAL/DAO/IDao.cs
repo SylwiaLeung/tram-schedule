@@ -12,6 +12,6 @@ namespace Tram_Schedule.DAL.DAO
 
         T Read(string name);
 
-        List<T> ReadAll();
+        IEnumerable<T> ReadAll();
     }
 }

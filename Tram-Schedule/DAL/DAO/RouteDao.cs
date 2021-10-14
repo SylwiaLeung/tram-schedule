@@ -31,7 +31,7 @@ namespace Tram_Schedule.DAL.DAO
             return Context.TramRoutes.AsNoTracking().Include(t => t.StopsList).Where(x => x.Name == name).FirstOrDefault();
         }
 
-        public List<Route> ReadAll()
+        public IEnumerable<Route> ReadAll()
         {
             return Context.TramRoutes.AsNoTracking().Include(t => t.StopsList).ToList();
         }
