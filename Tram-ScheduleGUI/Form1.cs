@@ -37,7 +37,7 @@ namespace Tram_ScheduleGUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error connection", ex.Message);
+                MessageBox.Show($"Connection error: {ex.Message}");
             }
             finally
             {
@@ -58,7 +58,7 @@ namespace Tram_ScheduleGUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error connection", ex.Message);
+                MessageBox.Show($"Connection error: {ex.Message}");
             }
             finally
             {
@@ -79,7 +79,7 @@ namespace Tram_ScheduleGUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error connection", ex.Message);
+                MessageBox.Show($"Connection error: {ex.Message}");
             }
             finally
             {
@@ -114,48 +114,49 @@ namespace Tram_ScheduleGUI
 
         private void AddTram_Click(object sender, EventArgs e)
         {
-            try
-            {
-                connection.Open();
-                current = "button4";
-                EnableFillingData();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error connection", ex.Message);
-            }
-            finally
-            {
-                connection.Close();
-            }
+            current = "button4";
+            EnableFillingData();
         }
 
         private void AddStop_Click(object sender, EventArgs e)
         {
-            try
-            {
-                connection.Open();
-                current = "button5";
-                EnableFillingData();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error connection", ex.Message);
-            }
-            finally
-            {
-                connection.Close();
-            }
+            current = "button5";
+            EnableFillingData();
         }
 
         private void Submit_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                connection.Open();
+                switch (current)
+                {
+                    case "button4":
+                        //TramStopDao dao = new(context);
+                        MessageBox.Show("Click!");
+                        break;
+                    case "button5":
+                        //RouteDao routeDao = new(context);
+                        MessageBox.Show("Clicku click!");
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Connection error: {ex.Message}");
+            }
+            finally
+            {
+                connection.Close();
+                DisableFillingData();
+            }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-
+            
         }
 
         private void EnableFillingData()
@@ -163,6 +164,13 @@ namespace Tram_ScheduleGUI
             textBox1.Enabled = true;
             textBox2.Enabled = true;
             Submit.Enabled = true;
+        }
+
+        private void DisableFillingData()
+        {
+            textBox1.Enabled = false;
+            textBox2.Enabled = false;
+            Submit.Enabled = false;
         }
     }
 }
