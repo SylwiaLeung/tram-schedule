@@ -33,14 +33,19 @@ namespace Tram_ScheduleGUI
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.haioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.AddStop = new System.Windows.Forms.Button();
+            this.AddTram = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.AddTram = new System.Windows.Forms.Button();
-            this.AddStop = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.Submit = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -82,11 +87,35 @@ namespace Tram_ScheduleGUI
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.label2);
+            this.splitContainer1.Panel2.Controls.Add(this.label1);
+            this.splitContainer1.Panel2.Controls.Add(this.Submit);
+            this.splitContainer1.Panel2.Controls.Add(this.textBox2);
+            this.splitContainer1.Panel2.Controls.Add(this.textBox1);
             this.splitContainer1.Panel2.Controls.Add(this.listBox2);
             this.splitContainer1.Panel2.Controls.Add(this.listBox1);
             this.splitContainer1.Size = new System.Drawing.Size(945, 549);
             this.splitContainer1.SplitterDistance = 314;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // AddStop
+            // 
+            this.AddStop.Location = new System.Drawing.Point(59, 345);
+            this.AddStop.Name = "AddStop";
+            this.AddStop.Size = new System.Drawing.Size(139, 61);
+            this.AddStop.TabIndex = 5;
+            this.AddStop.Text = "Add Stop";
+            this.AddStop.UseVisualStyleBackColor = true;
+            // 
+            // AddTram
+            // 
+            this.AddTram.Location = new System.Drawing.Point(59, 278);
+            this.AddTram.Name = "AddTram";
+            this.AddTram.Size = new System.Drawing.Size(139, 61);
+            this.AddTram.TabIndex = 4;
+            this.AddTram.Text = "Add Tram";
+            this.AddTram.UseVisualStyleBackColor = true;
+            this.AddTram.Click += new System.EventHandler(this.AddStop_Click);
             // 
             // button3
             // 
@@ -142,24 +171,51 @@ namespace Tram_ScheduleGUI
             this.bindingSource1.DataSource = this.splitContainer1.Panel2.Controls;
             this.bindingSource1.Position = 0;
             // 
-            // AddTram
+            // textBox1
             // 
-            this.AddTram.Location = new System.Drawing.Point(59, 278);
-            this.AddTram.Name = "AddTram";
-            this.AddTram.Size = new System.Drawing.Size(139, 61);
-            this.AddTram.TabIndex = 4;
-            this.AddTram.Text = "Add Tram";
-            this.AddTram.UseVisualStyleBackColor = true;
-            this.AddTram.Click += new System.EventHandler(this.AddStop_Click);
+            this.textBox1.Enabled = false;
+            this.textBox1.Location = new System.Drawing.Point(24, 345);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(226, 23);
+            this.textBox1.TabIndex = 3;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // AddStop
+            // textBox2
             // 
-            this.AddStop.Location = new System.Drawing.Point(59, 345);
-            this.AddStop.Name = "AddStop";
-            this.AddStop.Size = new System.Drawing.Size(139, 61);
-            this.AddStop.TabIndex = 5;
-            this.AddStop.Text = "Add Stop";
-            this.AddStop.UseVisualStyleBackColor = true;
+            this.textBox2.Enabled = false;
+            this.textBox2.Location = new System.Drawing.Point(256, 345);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(226, 23);
+            this.textBox2.TabIndex = 4;
+            // 
+            // Submit
+            // 
+            this.Submit.Enabled = false;
+            this.Submit.Location = new System.Drawing.Point(340, 382);
+            this.Submit.Name = "Submit";
+            this.Submit.Size = new System.Drawing.Size(142, 24);
+            this.Submit.TabIndex = 5;
+            this.Submit.Text = "Submit";
+            this.Submit.UseVisualStyleBackColor = true;
+            this.Submit.Click += new System.EventHandler(this.Submit_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(24, 324);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(42, 15);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Name:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(256, 324);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(48, 15);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Details: ";
             // 
             // Form1
             // 
@@ -175,6 +231,7 @@ namespace Tram_ScheduleGUI
             this.menuStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
@@ -196,6 +253,11 @@ namespace Tram_ScheduleGUI
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.Button AddStop;
         private System.Windows.Forms.Button AddTram;
+        private System.Windows.Forms.Button Submit;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
 

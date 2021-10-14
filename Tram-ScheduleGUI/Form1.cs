@@ -89,31 +89,36 @@ namespace Tram_ScheduleGUI
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string name = (string)listBox1.SelectedItem;
+            switch (current)
+            {
+                case "button3":
+                    TramStopDao dao = new(context);
+                    var descriptions = dao.ReadTramStopDescription(name);
+                    listBox2.DataSource = descriptions;
+                    break;
+                case "button2":
+                    RouteDao routeDao = new(context);
+                    var routStops = routeDao.ReadRouteStops(name);
+                    listBox2.DataSource = routStops;
+                    break;
+                case "button1":
+                    TramDao tramDao = new(context);
+                    var runs = tramDao.ReadTramFirstRun(name);
+                    listBox2.DataSource = runs;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void AddTram_Click(object sender, EventArgs e)
+        {
             try
             {
                 connection.Open();
-                string name = (string)listBox1.SelectedItem;
-                switch (current)
-                {
-                    case "button3":
-                        TramStopDao dao = new(context);
-                        var descriptions = dao.ReadTramStopDescription(name);
-                        listBox2.DataSource = descriptions;
-                        break;
-                    case "button2":
-                        RouteDao routeDao = new(context);
-                        var routStops = routeDao.ReadRouteStops(name);
-                        listBox2.DataSource = routStops;
-                        break;
-                    case "button1":
-                        TramDao tramDao = new(context);
-                        var runs = tramDao.ReadTramFirstRun(name);
-                        listBox2.DataSource = runs;
-                        break;
-                    default:
-                        break;
-                }
-
+                current = "button4";
+                EnableFillingData();
             }
             catch (Exception ex)
             {
@@ -124,14 +129,40 @@ namespace Tram_ScheduleGUI
                 connection.Close();
             }
         }
-        private void AddTram_Click(object sender, EventArgs e)
+
+        private void AddStop_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                connection.Open();
+                current = "button5";
+                EnableFillingData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error connection", ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+
+        private void Submit_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void AddStop_Click(object sender, EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void EnableFillingData()
+        {
+            textBox1.Enabled = true;
+            textBox2.Enabled = true;
+            Submit.Enabled = true;
         }
     }
 }
