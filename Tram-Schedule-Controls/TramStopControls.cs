@@ -32,10 +32,10 @@ namespace Tram_Schedule_Controls
         public void AddNewStop(string name, string description, string routeName)
         {
             RouteDao dao = new(tramStopDao.Context);
-            if (routeName != string.Empty)
+            if (!string.IsNullOrEmpty(routeName))
             {
                 var route = dao.Read(routeName);
-                if (description != string.Empty)
+                if (!string.IsNullOrEmpty(description))
                 {
                     tramStopDao.Add(new TramStop() { Name = name, Description = description, RouteID = route.ID });
                 }

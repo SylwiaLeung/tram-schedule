@@ -31,7 +31,7 @@ namespace Tram_Schedule_Controls
 
         public void AddNewTram(string name, string firstrun)
         {
-            if (firstrun != string.Empty)
+            if (!string.IsNullOrEmpty(firstrun))
             {
                 if (DateTime.TryParse(firstrun, out DateTime dt))
                 {

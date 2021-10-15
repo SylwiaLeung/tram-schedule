@@ -1,8 +1,24 @@
 ﻿
+using System.Data.SQLite;
+using System.Drawing;
+using Tram_Schedule.DAL;
+using Tram_Schedule_Controls;
+
 namespace Tram_ScheduleGUI
 {
     partial class Form1
     {
+        private const string path = @"data source=C:\Users\CTNW74\Desktop\projects\tram-schedule\Tram-Schedule\bin\Debug\net5.0\TramTable.db";
+        private readonly Bitmap popeTram = Properties.Resources.mdo_5153080;
+        private readonly Bitmap vintageTram = Properties.Resources.old_vintage_tram_old_vintage_tram_cracow_poland_107523067;
+        private readonly Bitmap kitten = Properties.Resources.kitten;
+        private readonly SQLiteConnection Connection;
+        private readonly DatabaseContext Context;
+        private readonly RouteControls RouteControls;
+        private readonly TramControls TramControls;
+        private readonly TramStopControls TramStopControls;
+        private string current;
+
         /// <summary>
         ///  Required designer variable.
         /// </summary>
@@ -38,6 +54,7 @@ namespace Tram_ScheduleGUI
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.RouteListBox = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -53,6 +70,7 @@ namespace Tram_ScheduleGUI
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -92,6 +110,7 @@ namespace Tram_ScheduleGUI
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.Linen;
+            this.splitContainer1.Panel2.Controls.Add(this.pictureBox1);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.RouteListBox);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
@@ -102,7 +121,7 @@ namespace Tram_ScheduleGUI
             this.splitContainer1.Panel2.Controls.Add(this.listBox2);
             this.splitContainer1.Panel2.Controls.Add(this.listBox1);
             this.splitContainer1.Size = new System.Drawing.Size(1125, 562);
-            this.splitContainer1.SplitterDistance = 373;
+            this.splitContainer1.SplitterDistance = 396;
             this.splitContainer1.TabIndex = 1;
             // 
             // AddStop
@@ -160,10 +179,20 @@ namespace Tram_ScheduleGUI
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.BrowseTrams_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.ErrorImage = global::Tram_ScheduleGUI.Properties.Resources.kitten;
+            this.pictureBox1.Image = global::Tram_ScheduleGUI.Properties.Resources.old_vintage_tram_old_vintage_tram_cracow_poland_107523067;
+            this.pictureBox1.Location = new System.Drawing.Point(419, 17);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(296, 301);
+            this.pictureBox1.TabIndex = 10;
+            this.pictureBox1.TabStop = false;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(489, 324);
+            this.label3.Location = new System.Drawing.Point(419, 344);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 15);
             this.label3.TabIndex = 9;
@@ -174,16 +203,15 @@ namespace Tram_ScheduleGUI
             this.RouteListBox.Enabled = false;
             this.RouteListBox.FormattingEnabled = true;
             this.RouteListBox.ItemHeight = 15;
-            this.RouteListBox.Location = new System.Drawing.Point(489, 345);
+            this.RouteListBox.Location = new System.Drawing.Point(419, 362);
             this.RouteListBox.Name = "RouteListBox";
             this.RouteListBox.Size = new System.Drawing.Size(226, 94);
             this.RouteListBox.TabIndex = 8;
-            this.RouteListBox.SelectedIndexChanged += new System.EventHandler(this.RouteListBox_SelectedIndexChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(256, 324);
+            this.label2.Location = new System.Drawing.Point(173, 344);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(48, 15);
             this.label2.TabIndex = 7;
@@ -192,7 +220,7 @@ namespace Tram_ScheduleGUI
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(24, 324);
+            this.label1.Location = new System.Drawing.Point(24, 344);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(42, 15);
             this.label1.TabIndex = 6;
@@ -201,7 +229,7 @@ namespace Tram_ScheduleGUI
             // Submit
             // 
             this.Submit.Enabled = false;
-            this.Submit.Location = new System.Drawing.Point(489, 472);
+            this.Submit.Location = new System.Drawing.Point(419, 462);
             this.Submit.Name = "Submit";
             this.Submit.Size = new System.Drawing.Size(226, 36);
             this.Submit.TabIndex = 5;
@@ -212,7 +240,7 @@ namespace Tram_ScheduleGUI
             // textBox2
             // 
             this.textBox2.Enabled = false;
-            this.textBox2.Location = new System.Drawing.Point(256, 345);
+            this.textBox2.Location = new System.Drawing.Point(173, 362);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(226, 23);
             this.textBox2.TabIndex = 4;
@@ -221,16 +249,16 @@ namespace Tram_ScheduleGUI
             // textBox1
             // 
             this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(24, 345);
+            this.textBox1.Location = new System.Drawing.Point(24, 362);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(226, 23);
+            this.textBox1.Size = new System.Drawing.Size(143, 23);
             this.textBox1.TabIndex = 3;
             // 
             // listBox2
             // 
             this.listBox2.FormattingEnabled = true;
             this.listBox2.ItemHeight = 15;
-            this.listBox2.Location = new System.Drawing.Point(256, 17);
+            this.listBox2.Location = new System.Drawing.Point(173, 17);
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(226, 199);
             this.listBox2.TabIndex = 2;
@@ -241,7 +269,7 @@ namespace Tram_ScheduleGUI
             this.listBox1.ItemHeight = 15;
             this.listBox1.Location = new System.Drawing.Point(24, 17);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(226, 199);
+            this.listBox1.Size = new System.Drawing.Size(143, 199);
             this.listBox1.TabIndex = 1;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -267,6 +295,7 @@ namespace Tram_ScheduleGUI
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -293,6 +322,7 @@ namespace Tram_ScheduleGUI
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ListBox RouteListBox;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

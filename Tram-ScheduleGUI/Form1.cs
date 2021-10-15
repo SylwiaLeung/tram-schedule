@@ -1,47 +1,33 @@
 ﻿using System.Windows.Forms;
-using System.Data.SQLite;
 using System;
-using Tram_Schedule.DAL;
 using Tram_Schedule.DAL.DAO;
 using Tram_Schedule_Controls;
-using Tram_Schedule.Models;
 
 namespace Tram_ScheduleGUI
 {
     public partial class Form1 : Form
     {
-        private readonly SQLiteConnection Connection = new SQLiteConnection(@"data source=C:\Users\CTNW74\Desktop\projects\tram-schedule\Tram-Schedule\bin\Debug\net5.0\TramTable.db");
-        private readonly DatabaseContext Context = new DatabaseContext();
-        private string current;
-        private string routeName = string.Empty;
-        private readonly IDao<Route> RouteDao;
-        private readonly IDao<Tram> TramDao;
-        private readonly IDao<TramStop> TramStopDao;
-        private readonly RouteControls RouteControls;
-        private readonly TramControls TramControls;
-        private readonly TramStopControls TramStopControls;
-
         public Form1()
         {
             InitializeComponent();
-            RouteDao = new RouteDao(Context);
-            TramDao = new TramDao(Context);
-            TramStopDao = new TramStopDao(Context);
-            RouteControls = new(RouteDao);
-            TramControls = new(TramDao);
-            TramStopControls = new(TramStopDao);
+            Connection = new(path);
+            Context = new();
+            RouteControls = new(new RouteDao(Context));
+            TramControls = new(new TramDao(Context));
+            TramStopControls = new(new TramStopDao (Context));
+            pictureBox1.Image = Properties.Resources.kitten;
         }
 
         private void BrowseTrams_Click(object sender, EventArgs e)
         {
+            DisableChoosingRoute();
+            DisableFillingData();
             listBox2.DataSource = null;
             try
             {
                 Connection.Open();
                 current = "button1";
-                TramDao dao = new(Context);
-                TramControls tramControls = new(dao);
-                var trams = tramControls.ReadAllTramNames();
+                var trams = TramControls.ReadAllTramNames();
                 listBox1.DataSource = trams;
             }
             catch (Exception ex)
@@ -56,6 +42,8 @@ namespace Tram_ScheduleGUI
 
         private void button2_Click(object sender, EventArgs e)
         {
+            DisableChoosingRoute();
+            DisableFillingData();
             listBox2.DataSource = null;
             try
             {
@@ -76,6 +64,8 @@ namespace Tram_ScheduleGUI
 
         private void button3_Click(object sender, EventArgs e)
         {
+            DisableChoosingRoute();
+            DisableFillingData();
             listBox2.DataSource = null;
             try
             {
@@ -97,6 +87,19 @@ namespace Tram_ScheduleGUI
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             string name = (string)listBox1.SelectedItem;
+            if (name == "Papieski")
+            {
+                pictureBox1.Image = popeTram;
+            }
+            else if (name == "Wawelski")
+            {
+                pictureBox1.Image = vintageTram;
+            }
+            else
+            {
+                pictureBox1.Image = kitten;
+            }
+
             switch (current)
             {
                 case "button3":
@@ -120,6 +123,7 @@ namespace Tram_ScheduleGUI
         {
             current = "button4";
             EnableFillingData();
+            DisableChoosingRoute();
             textBox2.Text = "First run date (dd-MM-yyy)";
         }
 
@@ -160,11 +164,12 @@ namespace Tram_ScheduleGUI
                 {
                     case "button4":
                         TramControls.AddNewTram(textBox1.Text, textBox2.Text);
-                        MessageBox.Show("Successfully added the new tram!");
+                        MessageBox.Show("Successfully added a new tram!");
                         break;
                     case "button5":
+                        string routeName = (string)RouteListBox.SelectedItem;
                         TramStopControls.AddNewStop(textBox1.Text, textBox2.Text, routeName);
-                        MessageBox.Show("Successfully added the new stop!");
+                        MessageBox.Show("Successfully added a new stop!");
                         break;
                     default:
                         break;
@@ -214,11 +219,6 @@ namespace Tram_ScheduleGUI
         private void RemoveText(object sender, EventArgs e)
         {
             textBox2.Text = string.Empty;
-        }
-
-        private void RouteListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            routeName = (string)RouteListBox.SelectedItem;
         }
     }
 }
