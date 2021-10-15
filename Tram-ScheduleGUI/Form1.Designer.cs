@@ -62,24 +62,27 @@ namespace Tram_ScheduleGUI
             this.haioToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1094, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1125, 37);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // haioToolStripMenuItem
             // 
+            this.haioToolStripMenuItem.Font = new System.Drawing.Font("Constantia", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.haioToolStripMenuItem.Name = "haioToolStripMenuItem";
-            this.haioToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.haioToolStripMenuItem.Size = new System.Drawing.Size(87, 33);
             this.haioToolStripMenuItem.Text = "Haio!";
             // 
             // splitContainer1
             // 
+            this.splitContainer1.Cursor = System.Windows.Forms.Cursors.VSplit;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 37);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.BackColor = System.Drawing.Color.DarkOliveGreen;
             this.splitContainer1.Panel1.Controls.Add(this.AddStop);
             this.splitContainer1.Panel1.Controls.Add(this.AddTram);
             this.splitContainer1.Panel1.Controls.Add(this.button3);
@@ -88,6 +91,7 @@ namespace Tram_ScheduleGUI
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.BackColor = System.Drawing.Color.Linen;
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.RouteListBox);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
@@ -97,13 +101,14 @@ namespace Tram_ScheduleGUI
             this.splitContainer1.Panel2.Controls.Add(this.textBox1);
             this.splitContainer1.Panel2.Controls.Add(this.listBox2);
             this.splitContainer1.Panel2.Controls.Add(this.listBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(1094, 575);
-            this.splitContainer1.SplitterDistance = 363;
+            this.splitContainer1.Size = new System.Drawing.Size(1125, 562);
+            this.splitContainer1.SplitterDistance = 373;
             this.splitContainer1.TabIndex = 1;
             // 
             // AddStop
             // 
-            this.AddStop.Location = new System.Drawing.Point(59, 345);
+            this.AddStop.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.AddStop.Location = new System.Drawing.Point(109, 324);
             this.AddStop.Name = "AddStop";
             this.AddStop.Size = new System.Drawing.Size(139, 61);
             this.AddStop.TabIndex = 5;
@@ -113,7 +118,8 @@ namespace Tram_ScheduleGUI
             // 
             // AddTram
             // 
-            this.AddTram.Location = new System.Drawing.Point(59, 278);
+            this.AddTram.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.AddTram.Location = new System.Drawing.Point(109, 257);
             this.AddTram.Name = "AddTram";
             this.AddTram.Size = new System.Drawing.Size(139, 61);
             this.AddTram.TabIndex = 4;
@@ -123,7 +129,8 @@ namespace Tram_ScheduleGUI
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(59, 159);
+            this.button3.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button3.Location = new System.Drawing.Point(109, 159);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(139, 57);
             this.button3.TabIndex = 3;
@@ -133,7 +140,8 @@ namespace Tram_ScheduleGUI
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(59, 84);
+            this.button2.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button2.Location = new System.Drawing.Point(109, 84);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(139, 69);
             this.button2.TabIndex = 2;
@@ -143,7 +151,8 @@ namespace Tram_ScheduleGUI
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(59, 17);
+            this.button1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button1.Location = new System.Drawing.Point(109, 17);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(139, 61);
             this.button1.TabIndex = 1;
@@ -245,7 +254,7 @@ namespace Tram_ScheduleGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1094, 599);
+            this.ClientSize = new System.Drawing.Size(1125, 599);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;

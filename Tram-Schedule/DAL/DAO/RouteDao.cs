@@ -7,7 +7,7 @@ namespace Tram_Schedule.DAL.DAO
 {
     public class RouteDao : IDao<Route>
     {
-        private DatabaseContext Context { get; set; }
+        public DatabaseContext Context { get; set; }
 
         public RouteDao(DatabaseContext context)
         {
@@ -40,16 +40,6 @@ namespace Tram_Schedule.DAL.DAO
         {
             Context.TramRoutes.Update(instance);
             Context.SaveChanges();
-        }
-
-        public IEnumerable<string> ReadAllRouteNames()
-        {
-            return ReadAll().Select(x => x.Name).ToList();
-        }
-
-        public IEnumerable<string> ReadRouteStops(string name)
-        {
-            return Read(name).StopsList.Select(x => x.Name).ToList();
         }
     }
 }

@@ -6,9 +6,9 @@ using Tram_Schedule.Models;
 
 namespace Tram_Schedule.DAL.DAO
 {
-    public class TramStopDao
+    public class TramStopDao : IDao<TramStop>
     {
-        private DatabaseContext Context { get; set; }
+        public DatabaseContext Context { get; set; }
 
         public TramStopDao(DatabaseContext context)
         {
@@ -41,41 +41,6 @@ namespace Tram_Schedule.DAL.DAO
         {
             Context.TramStops.Update(instance);
             Context.SaveChanges();
-        }
-
-        public IEnumerable<string> ReadAllTramStopNames()
-        {
-            return ReadAll().Select(x => x.Name).ToList();
-        }
-
-        public IEnumerable<string> ReadTramStopDescription(string name)
-        {
-            List<string> descriptions = new()
-            {
-                Read(name).Description
-            };
-            return descriptions;
-        }
-
-        public void AddNewStop(string name, string description, string routeName)
-        {
-            RouteDao dao = new(Context);
-            if (routeName != string.Empty)
-            {
-                var route = dao.Read(routeName);
-                if (description != string.Empty)
-                {
-                    Add(new TramStop() { Name = name, Description = description, RouteID = route.ID });
-                }
-                else
-                {
-                    Add(new TramStop() { Name = name, RouteID = route.ID });
-                }
-            }
-            else
-            {
-                throw new ArgumentException("Please choose from the list of routes.");
-            }
         }
     }
 }

@@ -3,20 +3,33 @@ using System.Data.SQLite;
 using System;
 using Tram_Schedule.DAL;
 using Tram_Schedule.DAL.DAO;
-using System.Collections.Generic;
+using Tram_Schedule_Controls;
+using Tram_Schedule.Models;
 
 namespace Tram_ScheduleGUI
 {
     public partial class Form1 : Form
     {
-        SQLiteConnection connection = new SQLiteConnection(@"data source=C:\Users\CTNW74\Desktop\projects\tram-schedule\Tram-Schedule\bin\Debug\net5.0\TramTable.db");
-        DatabaseContext context = new DatabaseContext();
-        string current;
-        string routeName = string.Empty;
+        private readonly SQLiteConnection Connection = new SQLiteConnection(@"data source=C:\Users\CTNW74\Desktop\projects\tram-schedule\Tram-Schedule\bin\Debug\net5.0\TramTable.db");
+        private readonly DatabaseContext Context = new DatabaseContext();
+        private string current;
+        private string routeName = string.Empty;
+        private readonly IDao<Route> RouteDao;
+        private readonly IDao<Tram> TramDao;
+        private readonly IDao<TramStop> TramStopDao;
+        private readonly RouteControls RouteControls;
+        private readonly TramControls TramControls;
+        private readonly TramStopControls TramStopControls;
 
         public Form1()
         {
             InitializeComponent();
+            RouteDao = new RouteDao(Context);
+            TramDao = new TramDao(Context);
+            TramStopDao = new TramStopDao(Context);
+            RouteControls = new(RouteDao);
+            TramControls = new(TramDao);
+            TramStopControls = new(TramStopDao);
         }
 
         private void BrowseTrams_Click(object sender, EventArgs e)
@@ -24,10 +37,11 @@ namespace Tram_ScheduleGUI
             listBox2.DataSource = null;
             try
             {
-                connection.Open();
+                Connection.Open();
                 current = "button1";
-                TramDao dao = new(context);
-                var trams = dao.ReadAllTramNames();
+                TramDao dao = new(Context);
+                TramControls tramControls = new(dao);
+                var trams = tramControls.ReadAllTramNames();
                 listBox1.DataSource = trams;
             }
             catch (Exception ex)
@@ -36,7 +50,7 @@ namespace Tram_ScheduleGUI
             }
             finally
             {
-                connection.Close();
+                Connection.Close();
             }
         }
 
@@ -45,10 +59,9 @@ namespace Tram_ScheduleGUI
             listBox2.DataSource = null;
             try
             {
-                connection.Open();
+                Connection.Open();
                 current = "button2";
-                RouteDao dao = new(context);
-                var routes = dao.ReadAllRouteNames();
+                var routes = RouteControls.ReadAllRouteNames();
                 listBox1.DataSource = routes;
             }
             catch (Exception ex)
@@ -57,7 +70,7 @@ namespace Tram_ScheduleGUI
             }
             finally
             {
-                connection.Close();
+                Connection.Close();
             }
         }
 
@@ -66,10 +79,9 @@ namespace Tram_ScheduleGUI
             listBox2.DataSource = null;
             try
             {
-                connection.Open();
+                Connection.Open();
                 current = "button3";
-                TramStopDao dao = new(context);
-                var stops = dao.ReadAllTramStopNames();
+                var stops = TramStopControls.ReadAllTramStopNames();
                 listBox1.DataSource = stops;
             }
             catch (Exception ex)
@@ -78,7 +90,7 @@ namespace Tram_ScheduleGUI
             }
             finally
             {
-                connection.Close();
+                Connection.Close();
             }
         }
 
@@ -88,18 +100,15 @@ namespace Tram_ScheduleGUI
             switch (current)
             {
                 case "button3":
-                    TramStopDao dao = new(context);
-                    var descriptions = dao.ReadTramStopDescription(name);
+                    var descriptions = TramStopControls.ReadTramStopDescription(name);
                     listBox2.DataSource = descriptions;
                     break;
                 case "button2":
-                    RouteDao routeDao = new(context);
-                    var routStops = routeDao.ReadRouteStops(name);
+                    var routStops = RouteControls.ReadRouteStops(name);
                     listBox2.DataSource = routStops;
                     break;
                 case "button1":
-                    TramDao tramDao = new(context);
-                    var runs = tramDao.ReadTramFirstRun(name);
+                    var runs = TramControls.ReadTramFirstRun(name);
                     listBox2.DataSource = runs;
                     break;
                 default:
@@ -123,9 +132,8 @@ namespace Tram_ScheduleGUI
             textBox2.Text = "Description of the stop";
             try
             {
-                connection.Open();
-                RouteDao dao = new(context);
-                var routes = dao.ReadAllRouteNames();
+                Connection.Open();
+                var routes = RouteControls.ReadAllRouteNames();
                 RouteListBox.DataSource = routes;
             }
             catch (Exception ex)
@@ -134,7 +142,7 @@ namespace Tram_ScheduleGUI
             }
             finally
             {
-                connection.Close();
+                Connection.Close();
             }
         }
 
@@ -147,41 +155,16 @@ namespace Tram_ScheduleGUI
             }
             try
             {
-                connection.Open();
+                Connection.Open();
                 switch (current)
                 {
                     case "button4":
-                        TramDao dao = new(context);
-                        try
-                        {
-                            dao.AddNewTram(textBox1.Text, textBox2.Text);
-                            MessageBox.Show("Successfully added the new tram!");
-                        }
-                        catch (FormatException ex)
-                        {
-                            MessageBox.Show($"{ex.Message}");
-                        }
-                        finally
-                        {
-                            DisableFillingData();
-                        }
+                        TramControls.AddNewTram(textBox1.Text, textBox2.Text);
+                        MessageBox.Show("Successfully added the new tram!");
                         break;
                     case "button5":
-                        TramStopDao stopDao = new(context);
-                        try
-                        {
-                            stopDao.AddNewStop(textBox1.Text, textBox2.Text, routeName);
-                            MessageBox.Show("Successfully added the new stop!");
-                        }
-                        catch (FormatException ex)
-                        {
-                            MessageBox.Show($"{ex.Message}");
-                        }
-                        finally
-                        {
-                            DisableChoosingRoute();
-                            DisableFillingData();
-                        }
+                        TramStopControls.AddNewStop(textBox1.Text, textBox2.Text, routeName);
+                        MessageBox.Show("Successfully added the new stop!");
                         break;
                     default:
                         break;
@@ -189,13 +172,14 @@ namespace Tram_ScheduleGUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Try again; {ex.Message}");
+                MessageBox.Show($"Error: {ex.Message}");
             }
             finally
             {
-                connection.Close();
+                Connection.Close();
                 textBox1.Clear();
                 textBox2.Clear();
+                DisableChoosingRoute();
                 DisableFillingData();
             }
         }

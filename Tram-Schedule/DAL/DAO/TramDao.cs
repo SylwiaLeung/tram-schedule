@@ -42,41 +42,5 @@ namespace Tram_Schedule.DAL.DAO
             Context.Trams.Update(instance);
             Context.SaveChanges();
         }
-
-        public IEnumerable<string> ReadAllTramNames()
-        {
-            return ReadAll().Select(x => x.Name).ToList();
-        }
-
-        public IEnumerable<DateTime> ReadTramFirstRun(string name)
-        {
-            var runs = new List<DateTime>
-            {
-                Read(name).FirstRun
-            };
-            return runs;
-        }
-
-        public void AddNewTram(string name, string firstrun)
-        {
-            if (firstrun != string.Empty)
-            {
-                if (DateTime.TryParse(firstrun, out DateTime dt))
-                {
-                    if (dt <= DateTime.Now)
-                    {
-                        Add(new Tram() { Name = name, FirstRun = dt });
-                    }
-                }
-                else
-                {
-                    throw new FormatException();
-                }
-            }
-            else
-            {
-                Add(new Tram() { Name = name });
-            }
-        }
     }
 }

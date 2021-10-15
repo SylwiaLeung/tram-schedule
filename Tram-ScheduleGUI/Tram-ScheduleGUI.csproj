@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tram-Schedule-Controls\Tram-Schedule-Controls.csproj" />
     <ProjectReference Include="..\Tram-Schedule\Tram-Schedule.csproj" />
   </ItemGroup>
 
