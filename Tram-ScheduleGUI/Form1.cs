@@ -3,11 +3,31 @@ using System;
 using Tram_Schedule.DAL.DAO;
 using Tram_Schedule_Controls;
 using Tram_Schedule.Models;
+using System.Collections.Generic;
+using Tram_Schedule.DAL;
+using System.Data.SQLite;
+using System.Drawing;
 
 namespace Tram_ScheduleGUI
 {
     public partial class Form1 : Form
     {
+        private const string path = @"data source=C:\Users\CTNW74\Desktop\projects\tram-schedule\Tram-Schedule\bin\Debug\net5.0\TramTable.db";
+        private readonly Bitmap popeTram = Properties.Resources.mdo_5153080;
+        private readonly Bitmap vintageTram = Properties.Resources.old_vintage_tram_old_vintage_tram_cracow_poland_107523067;
+        private readonly Bitmap kitten = Properties.Resources.kitten;
+        private readonly SQLiteConnection Connection;
+        private readonly DatabaseContext Context;
+        private readonly TramDao TramDao;
+        private readonly TramStopDao TramStopDao;
+        private readonly RouteDao RouteDao;
+        private readonly RouteControls RouteControls;
+        private readonly TramControls TramControls;
+        private readonly TramStopControls TramStopControls;
+        private string current;
+        BindingSource comboBoxBinding;
+        BindingSource listBoxBinding;
+
         public Form1()
         {
             InitializeComponent();
@@ -20,9 +40,6 @@ namespace Tram_ScheduleGUI
             TramStopDao = new TramStopDao(Context);
             TramStopControls = new(TramStopDao);
             pictureBox1.Image = Properties.Resources.kitten;
-            routes = RouteDao.ReadAll();
-            stops = TramStopDao.ReadAll();
-            trams = TramDao.ReadAll();
             comboBoxBinding = new();
             listBoxBinding = new();
         }
@@ -205,7 +222,7 @@ namespace Tram_ScheduleGUI
         {
             comboBoxBinding.DataSource = null;
             listBoxBinding.DataSource = null;
-            comboBoxBinding.DataSource = routes;
+            comboBoxBinding.DataSource = RouteDao.ReadAll();
             listBoxBinding.DataSource = comboBoxBinding;
             listBoxBinding.DataMember = "StopsList";
             comboBox1.DataSource = comboBoxBinding;
@@ -218,7 +235,7 @@ namespace Tram_ScheduleGUI
         {
             comboBoxBinding.DataSource = null;
             listBoxBinding.DataSource = null;
-            comboBoxBinding.DataSource = stops;
+            comboBoxBinding.DataSource = TramStopDao.ReadAll();
             listBoxBinding.DataSource = comboBoxBinding;
             listBoxBinding.DataMember = "Description";
             comboBox1.DataSource = comboBoxBinding;

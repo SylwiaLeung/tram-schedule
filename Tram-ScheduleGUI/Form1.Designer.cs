@@ -1,37 +1,9 @@
-﻿
-using System.Collections.Generic;
-using System.Data.SQLite;
-using System.Drawing;
-using System.Windows.Forms;
-using Tram_Schedule.DAL;
-using Tram_Schedule.DAL.DAO;
-using Tram_Schedule.Models;
-using Tram_Schedule_Controls;
+﻿using System.Windows.Forms;
 
 namespace Tram_ScheduleGUI
 {
     partial class Form1
     {
-        private const string path = @"data source=C:\Users\CTNW74\Desktop\projects\tram-schedule\Tram-Schedule\bin\Debug\net5.0\TramTable.db";
-        private readonly Bitmap popeTram = Properties.Resources.mdo_5153080;
-        private readonly Bitmap vintageTram = Properties.Resources.old_vintage_tram_old_vintage_tram_cracow_poland_107523067;
-        private readonly Bitmap kitten = Properties.Resources.kitten;
-        private readonly SQLiteConnection Connection;
-        private readonly DatabaseContext Context;
-        private readonly TramDao TramDao;
-        private readonly TramStopDao TramStopDao;
-        private readonly RouteDao RouteDao;
-        private readonly RouteControls RouteControls;
-        private readonly TramControls TramControls;
-        private readonly TramStopControls TramStopControls;
-        private string current;
-        BindingSource comboBoxBinding;
-        BindingSource listBoxBinding;
-        private readonly List<Route> routes;
-        private readonly List<Tram> trams;
-        private readonly List<TramStop> stops;
-
-
         /// <summary>
         ///  Required designer variable.
         /// </summary>
