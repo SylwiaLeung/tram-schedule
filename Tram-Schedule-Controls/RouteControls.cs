@@ -18,10 +18,5 @@ namespace Tram_Schedule_Controls
         {
             return routeDao.ReadAll().Select(x => x.Name).ToList();
         }
-
-        public IEnumerable<string> ReadRouteStops(string name)
-        {
-            return routeDao.Read(name).StopsList.Select(x => x.Name).ToList();
-        }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Tram_Schedule.DAL.DAO;
 using Tram_Schedule_Controls;
+using Tram_Schedule.Models;
 
 namespace Tram_ScheduleGUI
 {
@@ -12,23 +13,29 @@ namespace Tram_ScheduleGUI
             InitializeComponent();
             Connection = new(path);
             Context = new();
-            RouteControls = new(new RouteDao(Context));
-            TramControls = new(new TramDao(Context));
-            TramStopControls = new(new TramStopDao (Context));
+            RouteDao = new RouteDao(Context);
+            RouteControls = new(RouteDao);
+            TramDao = new TramDao(Context);
+            TramControls = new(TramDao);
+            TramStopDao = new TramStopDao(Context);
+            TramStopControls = new(TramStopDao);
             pictureBox1.Image = Properties.Resources.kitten;
+            routes = RouteDao.ReadAll();
+            stops = TramStopDao.ReadAll();
+            trams = TramDao.ReadAll();
+            comboBoxBinding = new();
+            listBoxBinding = new();
         }
 
         private void BrowseTrams_Click(object sender, EventArgs e)
         {
             DisableChoosingRoute();
             DisableFillingData();
-            listBox2.DataSource = null;
             try
             {
                 Connection.Open();
                 current = "button1";
-                var trams = TramControls.ReadAllTramNames();
-                listBox1.DataSource = trams;
+                SetUpTramBindings();
             }
             catch (Exception ex)
             {
@@ -44,13 +51,11 @@ namespace Tram_ScheduleGUI
         {
             DisableChoosingRoute();
             DisableFillingData();
-            listBox2.DataSource = null;
             try
             {
                 Connection.Open();
                 current = "button2";
-                var routes = RouteControls.ReadAllRouteNames();
-                listBox1.DataSource = routes;
+                SetUpRouteBindings();
             }
             catch (Exception ex)
             {
@@ -66,13 +71,11 @@ namespace Tram_ScheduleGUI
         {
             DisableChoosingRoute();
             DisableFillingData();
-            listBox2.DataSource = null;
             try
             {
                 Connection.Open();
                 current = "button3";
-                var stops = TramStopControls.ReadAllTramStopNames();
-                listBox1.DataSource = stops;
+                SetUpStopBindings();
             }
             catch (Exception ex)
             {
@@ -81,41 +84,6 @@ namespace Tram_ScheduleGUI
             finally
             {
                 Connection.Close();
-            }
-        }
-
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string name = (string)listBox1.SelectedItem;
-            if (name == "Papieski")
-            {
-                pictureBox1.Image = popeTram;
-            }
-            else if (name == "Wawelski")
-            {
-                pictureBox1.Image = vintageTram;
-            }
-            else
-            {
-                pictureBox1.Image = kitten;
-            }
-
-            switch (current)
-            {
-                case "button3":
-                    var descriptions = TramStopControls.ReadTramStopDescription(name);
-                    listBox2.DataSource = descriptions;
-                    break;
-                case "button2":
-                    var routStops = RouteControls.ReadRouteStops(name);
-                    listBox2.DataSource = routStops;
-                    break;
-                case "button1":
-                    var runs = TramControls.ReadTramFirstRun(name);
-                    listBox2.DataSource = runs;
-                    break;
-                default:
-                    break;
             }
         }
 
@@ -219,6 +187,69 @@ namespace Tram_ScheduleGUI
         private void RemoveText(object sender, EventArgs e)
         {
             textBox2.Text = string.Empty;
+        }
+
+        private void SetUpTramBindings()
+        {
+            comboBoxBinding.DataSource = null;
+            listBoxBinding.DataSource = null;
+            comboBoxBinding.DataSource = TramDao.ReadAll();
+            listBoxBinding.DataSource = comboBoxBinding;
+            listBoxBinding.DataMember = "FirstRun";
+            comboBox1.DataSource = comboBoxBinding;
+            comboBox1.DisplayMember = "Name";
+            listBox3.DataSource = listBoxBinding;
+        }
+
+        private void SetUpRouteBindings()
+        {
+            comboBoxBinding.DataSource = null;
+            listBoxBinding.DataSource = null;
+            comboBoxBinding.DataSource = routes;
+            listBoxBinding.DataSource = comboBoxBinding;
+            listBoxBinding.DataMember = "StopsList";
+            comboBox1.DataSource = comboBoxBinding;
+            comboBox1.DisplayMember = "Name";
+            listBox3.DataSource = listBoxBinding;
+            listBox3.DisplayMember = "Name";
+        }
+
+        private void SetUpStopBindings()
+        {
+            comboBoxBinding.DataSource = null;
+            listBoxBinding.DataSource = null;
+            comboBoxBinding.DataSource = stops;
+            listBoxBinding.DataSource = comboBoxBinding;
+            listBoxBinding.DataMember = "Description";
+            comboBox1.DataSource = comboBoxBinding;
+            comboBox1.DisplayMember = "Name";
+            listBox3.DataSource = listBoxBinding;
+        }
+
+        private void SetUpTramPicture()
+        {
+            if (comboBox1.SelectedItem != null)
+            {
+                Tram tram = (Tram)comboBox1.SelectedItem;
+                string name = tram.Name;
+                if (name == "PapaTram")
+                {
+                    pictureBox1.Image = popeTram;
+                }
+                else if (name == "VintageTram")
+                {
+                    pictureBox1.Image = vintageTram;
+                }
+                else
+                {
+                    pictureBox1.Image = kitten;
+                }
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (current == "button1") SetUpTramPicture();
         }
     }
 }

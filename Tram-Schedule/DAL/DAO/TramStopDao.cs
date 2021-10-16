@@ -32,7 +32,7 @@ namespace Tram_Schedule.DAL.DAO
             return Context.TramStops.AsNoTracking().Where(x => x.Name == name).FirstOrDefault();
         }
 
-        public IEnumerable<TramStop> ReadAll()
+        public List<TramStop> ReadAll()
         {
             return Context.TramStops.AsNoTracking().ToList();
         }

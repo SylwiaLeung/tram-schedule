@@ -1,7 +1,11 @@
 ﻿
+using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Drawing;
+using System.Windows.Forms;
 using Tram_Schedule.DAL;
+using Tram_Schedule.DAL.DAO;
+using Tram_Schedule.Models;
 using Tram_Schedule_Controls;
 
 namespace Tram_ScheduleGUI
@@ -14,10 +18,19 @@ namespace Tram_ScheduleGUI
         private readonly Bitmap kitten = Properties.Resources.kitten;
         private readonly SQLiteConnection Connection;
         private readonly DatabaseContext Context;
+        private readonly TramDao TramDao;
+        private readonly TramStopDao TramStopDao;
+        private readonly RouteDao RouteDao;
         private readonly RouteControls RouteControls;
         private readonly TramControls TramControls;
         private readonly TramStopControls TramStopControls;
         private string current;
+        BindingSource comboBoxBinding;
+        BindingSource listBoxBinding;
+        private readonly List<Route> routes;
+        private readonly List<Tram> trams;
+        private readonly List<TramStop> stops;
+
 
         /// <summary>
         ///  Required designer variable.
@@ -54,6 +67,8 @@ namespace Tram_ScheduleGUI
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.listBox3 = new System.Windows.Forms.ListBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.RouteListBox = new System.Windows.Forms.ListBox();
@@ -62,8 +77,6 @@ namespace Tram_ScheduleGUI
             this.Submit = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.listBox2 = new System.Windows.Forms.ListBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -110,6 +123,8 @@ namespace Tram_ScheduleGUI
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.Color.Linen;
+            this.splitContainer1.Panel2.Controls.Add(this.listBox3);
+            this.splitContainer1.Panel2.Controls.Add(this.comboBox1);
             this.splitContainer1.Panel2.Controls.Add(this.pictureBox1);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.RouteListBox);
@@ -118,8 +133,6 @@ namespace Tram_ScheduleGUI
             this.splitContainer1.Panel2.Controls.Add(this.Submit);
             this.splitContainer1.Panel2.Controls.Add(this.textBox2);
             this.splitContainer1.Panel2.Controls.Add(this.textBox1);
-            this.splitContainer1.Panel2.Controls.Add(this.listBox2);
-            this.splitContainer1.Panel2.Controls.Add(this.listBox1);
             this.splitContainer1.Size = new System.Drawing.Size(1125, 562);
             this.splitContainer1.SplitterDistance = 396;
             this.splitContainer1.TabIndex = 1;
@@ -178,6 +191,24 @@ namespace Tram_ScheduleGUI
             this.button1.Text = "Browse Trams";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.BrowseTrams_Click);
+            // 
+            // listBox3
+            // 
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.ItemHeight = 15;
+            this.listBox3.Location = new System.Drawing.Point(173, 55);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(226, 139);
+            this.listBox3.TabIndex = 12;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(24, 55);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(143, 23);
+            this.comboBox1.TabIndex = 11;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // pictureBox1
             // 
@@ -254,25 +285,6 @@ namespace Tram_ScheduleGUI
             this.textBox1.Size = new System.Drawing.Size(143, 23);
             this.textBox1.TabIndex = 3;
             // 
-            // listBox2
-            // 
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.ItemHeight = 15;
-            this.listBox2.Location = new System.Drawing.Point(173, 17);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(226, 199);
-            this.listBox2.TabIndex = 2;
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(24, 17);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(143, 199);
-            this.listBox1.TabIndex = 1;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
-            // 
             // bindingSource1
             // 
             this.bindingSource1.DataSource = this.splitContainer1.Panel2.Controls;
@@ -310,9 +322,7 @@ namespace Tram_ScheduleGUI
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.BindingSource bindingSource1;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.ToolStripMenuItem haioToolStripMenuItem;
-        private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.Button AddStop;
         private System.Windows.Forms.Button AddTram;
         private System.Windows.Forms.Button Submit;
@@ -323,6 +333,8 @@ namespace Tram_ScheduleGUI
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ListBox RouteListBox;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private ComboBox comboBox1;
+        private ListBox listBox3;
     }
 }
 

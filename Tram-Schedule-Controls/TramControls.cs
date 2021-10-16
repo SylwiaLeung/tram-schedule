@@ -15,20 +15,6 @@ namespace Tram_Schedule_Controls
             tramDao = dao;
         }
 
-        public IEnumerable<string> ReadAllTramNames()
-        {
-            return tramDao.ReadAll().Select(x => x.Name).ToList();
-        }
-
-        public IEnumerable<DateTime> ReadTramFirstRun(string name)
-        {
-            var runs = new List<DateTime>
-            {
-                tramDao.Read(name).FirstRun
-            };
-            return runs;
-        }
-
         public void AddNewTram(string name, string firstrun)
         {
             if (!string.IsNullOrEmpty(firstrun))
