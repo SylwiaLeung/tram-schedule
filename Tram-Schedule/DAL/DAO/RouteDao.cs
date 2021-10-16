@@ -7,9 +7,9 @@ namespace Tram_Schedule.DAL.DAO
 {
     public class RouteDao : IDao<Route>
     {
-        public DatabaseContext Context { get; set; }
+        public IDatabaseContext Context { get; set; }
 
-        public RouteDao(DatabaseContext context)
+        public RouteDao(IDatabaseContext context)
         {
             Context = context;
         }
@@ -17,13 +17,13 @@ namespace Tram_Schedule.DAL.DAO
         public void Add(Route instance)
         {
             Context.TramRoutes.Add(instance);
-            Context.SaveChanges();
+            Context.Save();
         }
 
         public void Delete(Route instance)
         {
             Context.TramRoutes.Remove(instance);
-            Context.SaveChanges();
+            Context.Save();
         }
 
         public Route Read(string name)
@@ -39,7 +39,7 @@ namespace Tram_Schedule.DAL.DAO
         public void Update(Route instance)
         {
             Context.TramRoutes.Update(instance);
-            Context.SaveChanges();
+            Context.Save();
         }
     }
 }

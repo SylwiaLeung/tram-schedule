@@ -8,9 +8,9 @@ namespace Tram_Schedule.DAL.DAO
 {
     public class TramStopDao : IDao<TramStop>
     {
-        public DatabaseContext Context { get; set; }
+        public IDatabaseContext Context { get; set; }
 
-        public TramStopDao(DatabaseContext context)
+        public TramStopDao(IDatabaseContext context)
         {
             Context = context;
         }
@@ -18,13 +18,13 @@ namespace Tram_Schedule.DAL.DAO
         public void Add(TramStop instance)
         {
             Context.TramStops.Add(instance);
-            Context.SaveChanges();
+            Context.Save();
         }
 
         public void Delete(TramStop instance)
         {
             Context.TramStops.Remove(instance);
-            Context.SaveChanges();
+            Context.Save();
         }
 
         public TramStop Read(string name)
@@ -40,7 +40,7 @@ namespace Tram_Schedule.DAL.DAO
         public void Update(TramStop instance)
         {
             Context.TramStops.Update(instance);
-            Context.SaveChanges();
+            Context.Save();
         }
     }
 }

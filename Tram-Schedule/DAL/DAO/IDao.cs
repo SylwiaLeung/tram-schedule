@@ -4,7 +4,7 @@ namespace Tram_Schedule.DAL.DAO
 {
     public interface IDao<T>
     {
-        DatabaseContext Context { get; set; }
+        IDatabaseContext Context { get; set; }
 
         void Add(T instance);
 
