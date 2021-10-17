@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Tram_Schedule.Models;
@@ -28,14 +27,9 @@ namespace Tram_Schedule.DAL.DAO
         }
 
         public TramStop Read(string name)
-        {
-            return Context.TramStops.AsNoTracking().Where(x => x.Name == name).FirstOrDefault();
-        }
+            => Context.TramStops.AsNoTracking().Where(x => x.Name == name).FirstOrDefault();
 
-        public List<TramStop> ReadAll()
-        {
-            return Context.TramStops.AsNoTracking().ToList();
-        }
+        public List<TramStop> ReadAll() => Context.TramStops.AsNoTracking().ToList();
 
         public void Update(TramStop instance)
         {

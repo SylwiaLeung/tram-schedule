@@ -7,16 +7,13 @@ namespace Tram_Schedule_Controls
 {
     public class RouteControls
     {
-        private readonly IDao<Route> routeDao;
+        private readonly IDao<Route> _routeDao;
 
         public RouteControls(IDao<Route> dao)
         {
-            routeDao = dao;
+            _routeDao = dao;
         }
 
-        public List<string> ReadAllRouteNames()
-        {
-            return routeDao.ReadAll().Select(x => x.Name).ToList();
-        }
+        public List<string> ReadAllRouteNames() => _routeDao.ReadAll().Select(x => x.Name).ToList();
     }
 }

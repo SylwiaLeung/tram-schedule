@@ -26,15 +26,11 @@ namespace Tram_Schedule.DAL.DAO
             Context.Save();
         }
 
-        public Route Read(string name)
-        {
-            return Context.TramRoutes.AsNoTracking().Include(t => t.StopsList).Where(x => x.Name == name).FirstOrDefault();
-        }
+        public Route Read(string name) 
+            => Context.TramRoutes.AsNoTracking().Include(t => t.StopsList).Where(x => x.Name == name).FirstOrDefault();
 
-        public List<Route> ReadAll()
-        {
-            return Context.TramRoutes.AsNoTracking().Include(t => t.StopsList).ToList();
-        }
+        public List<Route> ReadAll() 
+            => Context.TramRoutes.AsNoTracking().Include(t => t.StopsList).ToList();
 
         public void Update(Route instance)
         {

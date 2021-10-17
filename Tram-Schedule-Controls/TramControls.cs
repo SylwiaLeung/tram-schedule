@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Tram_Schedule.DAL.DAO;
 using Tram_Schedule.Models;
 
@@ -8,11 +6,11 @@ namespace Tram_Schedule_Controls
 {
     public class TramControls
     {
-        private readonly IDao<Tram> tramDao;
+        private readonly IDao<Tram> _tramDao;
 
         public TramControls(IDao<Tram> dao)
         {
-            tramDao = dao;
+            _tramDao = dao;
         }
 
         public void AddNewTram(string name, string firstrun)
@@ -23,7 +21,7 @@ namespace Tram_Schedule_Controls
                 {
                     if (dt <= DateTime.Now)
                     {
-                        tramDao.Add(new Tram() { Name = name, FirstRun = dt });
+                        _tramDao.Add(new Tram() { Name = name, FirstRun = dt });
                     }
                 }
                 else
@@ -33,7 +31,7 @@ namespace Tram_Schedule_Controls
             }
             else
             {
-                tramDao.Add(new Tram() { Name = name });
+                _tramDao.Add(new Tram() { Name = name });
             }
         }
     }

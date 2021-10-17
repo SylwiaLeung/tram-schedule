@@ -6,27 +6,24 @@ namespace Tram_Schedule_Controls
 {
     public class TramStopControls
     {
-        private readonly IDao<TramStop> tramStopDao;
+        private readonly IDao<TramStop> _tramStopDao;
 
         public TramStopControls(IDao<TramStop> dao)
         {
-            tramStopDao = dao;
+            _tramStopDao = dao;
         }
 
         public void AddNewStop(string name, string description, string routeName)
         {
-            RouteDao dao = new(tramStopDao.Context);
+            RouteDao dao = new(_tramStopDao.Context);
             if (!string.IsNullOrEmpty(routeName))
             {
                 var route = dao.Read(routeName);
-                if (!string.IsNullOrEmpty(description))
+                if (string.IsNullOrEmpty(description) || description == "Description of the stop")
                 {
-                    tramStopDao.Add(new TramStop() { Name = name, Description = description, RouteID = route.ID });
+                    description = "No description given";
                 }
-                else
-                {
-                    tramStopDao.Add(new TramStop() { Name = name, RouteID = route.ID });
-                }
+                _tramStopDao.Add(new TramStop() { Name = name, Description = description, RouteID = route.ID });
             }
             else
             {
