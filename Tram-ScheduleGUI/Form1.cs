@@ -118,20 +118,8 @@ namespace Tram_ScheduleGUI
             EnableFillingData();
             EnableChoosingRoute();
             textBox2.Text = "Description of the stop";
-            try
-            {
-                _connection.Open();
-                var routes = _routeControls.ReadAllRouteNames();
-                RouteListBox.DataSource = routes;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Connection error: {ex.Message}");
-            }
-            finally
-            {
-                _connection.Close();
-            }
+            var routes = _routeControls.ReadAllRouteNames();
+            RouteListBox.DataSource = routes;
         }
 
         private void Submit_Click(object sender, EventArgs e)
@@ -152,8 +140,15 @@ namespace Tram_ScheduleGUI
                         break;
                     case "button5":
                         string routeName = (string)RouteListBox.SelectedItem;
-                        _tramStopControls.AddNewStop(textBox1.Text, textBox2.Text, routeName);
-                        MessageBox.Show("Successfully added a new stop!");
+                        try
+                        {
+                            _tramStopControls.AddNewStop(textBox1.Text, textBox2.Text, routeName);
+                            MessageBox.Show("Successfully added a new stop!");
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            MessageBox.Show($"Error: {ex.Message}");
+                        }
                         break;
                     default:
                         break;
@@ -195,10 +190,7 @@ namespace Tram_ScheduleGUI
             RouteListBox.Enabled = false;
         }
 
-        private bool CheckIfFieldIsEmpty(TextBox box)
-        {
-            return box.Text == string.Empty;
-        }
+        private bool CheckIfFieldIsEmpty(TextBox box) => box.Text == string.Empty;
 
         private void RemoveText(object sender, EventArgs e)
         {
@@ -211,9 +203,9 @@ namespace Tram_ScheduleGUI
             _listBoxBinding.DataSource = null;
             _comboBoxBinding.DataSource = _tramDao.ReadAll();
             _listBoxBinding.DataSource = _comboBoxBinding;
-            _listBoxBinding.DataMember = "FirstRun";
+            _listBoxBinding.DataMember = nameof(Tram.FirstRun);
             comboBox1.DataSource = _comboBoxBinding;
-            comboBox1.DisplayMember = "Name";
+            comboBox1.DisplayMember = nameof(Tram.Name);
             listBox3.DataSource = _listBoxBinding;
         }
 
@@ -223,11 +215,11 @@ namespace Tram_ScheduleGUI
             _listBoxBinding.DataSource = null;
             _comboBoxBinding.DataSource = _routeDao.ReadAll();
             _listBoxBinding.DataSource = _comboBoxBinding;
-            _listBoxBinding.DataMember = "StopsList";
+            _listBoxBinding.DataMember = nameof(Route.StopsList);
             comboBox1.DataSource = _comboBoxBinding;
-            comboBox1.DisplayMember = "Name";
+            comboBox1.DisplayMember = nameof(Route.Name);
             listBox3.DataSource = _listBoxBinding;
-            listBox3.DisplayMember = "Name";
+            listBox3.DisplayMember = nameof(Route.Name);
         }
 
         private void SetUpStopBindings()
@@ -236,9 +228,9 @@ namespace Tram_ScheduleGUI
             _listBoxBinding.DataSource = null;
             _comboBoxBinding.DataSource = _tramStopDao.ReadAll();
             _listBoxBinding.DataSource = _comboBoxBinding;
-            _listBoxBinding.DataMember = "Description";
+            _listBoxBinding.DataMember = nameof(TramStop.Description);
             comboBox1.DataSource = _comboBoxBinding;
-            comboBox1.DisplayMember = "Name";
+            comboBox1.DisplayMember = nameof(TramStop.Name);
             listBox3.DataSource = _listBoxBinding;
         }
 
